@@ -1,4 +1,3 @@
-
 var c1;
 var rValue;
 var gValue;
@@ -12,9 +11,52 @@ var toolButton;
 var ctx;
 var visibility;
 var tools;
+var currentColor;
+var timer1;
 
 window.onload = function()
 {
+    $(function(){
+        $("#sliderR").slider({
+            range: "max",
+            min: 0,
+            max: 255,
+            value: 1,
+            slide: function(event, ui){
+                $("#r").val(ui.value);
+            }
+        });
+        $("#r").val($("sliderR").slider("value"));
+    });
+
+    $(function(){
+        $("#sliderG").slider({
+            range: "max",
+            min: 0,
+            max: 255,
+            value: 1,
+            slide: function(event, ui){
+                $("#g").val(ui.value);
+            }
+        });
+        $("#g").val($("sliderG").slider("value"));
+    });
+
+    $(function(){
+        $("#sliderB").slider({
+            range: "max",
+            min: 0,
+            max: 255,
+            value: 1,
+            slide: function(event, ui){
+                $("#b").val(ui.value);
+            }
+        });
+        $("#b").val($("sliderB").slider("value"));
+    });
+
+
+
     visibility = [false,false];
     tools = [document.getElementById("pencil"),document.getElementById("eraser")];
 
@@ -22,6 +64,7 @@ window.onload = function()
     toolButton = document.getElementById("tools");
     colorWheel = document.getElementById("colorPicker");
     colorButton = document.getElementById("colors");
+    currentColor = document.getElementById("currentColor");
     button = document.getElementById("clear");
     c1 = document.getElementById("drawCanvas");
     ctx = c1.getContext("2d");
@@ -40,34 +83,36 @@ window.onload = function()
 
     c1.addEventListener("mousedown",function()
     {
-        if(paintBrush.getToolType() == 0)
-        {
-            paintBrush.setDrawing(true);
+        paintBrush.setDrawing(true);
 
-            rValue = document.getElementById("r").value;
-            gValue = document.getElementById("g").value;
-            bValue = document.getElementById("b").value;
+            if(paintBrush.getToolType() == 0)
+            {
 
-            console.log(paintBrush.getDrawing());
+                rValue = document.getElementById("r").value;
+                gValue = document.getElementById("g").value;
+                bValue = document.getElementById("b").value;
 
-            paintBrush.setX(event.clientX);
-            paintBrush.setY(event.clientY);
-            paintBrush.setColor("rgb(" + rValue + "," + gValue + "," + bValue + ")");
+                paintBrush.setX(event.clientX);
+                paintBrush.setY(event.clientY);
+                paintBrush.setColor("rgb(" + rValue + "," + gValue + "," + bValue + ")");
 
-            paintBrush.draw(ctx);
-        }
-        else if(paintBrush.getToolType() == 1)
-        {
-         paintBrush.setX(event.clientX);
-         paintBrush.setY(event.clientY);
+                paintBrush.draw(ctx);
+            }
+            else if(paintBrush.getToolType() == 1)
+            {
+                paintBrush.setX(event.clientX);
+                paintBrush.setY(event.clientY);
 
-         paintBrush.erase(ctx);
-        }
+                paintBrush.erase(ctx);
+            }
+
+
+
+
     });
     c1.addEventListener("mouseup",function()
     {
        paintBrush.setDrawing(false);
-        console.log(paintBrush.getDrawing());
     });
     button.addEventListener("click",clear);
     colorButton.addEventListener("click",function()
@@ -100,6 +145,19 @@ window.onload = function()
             visibility[1] = true;
         }
     });
+
+    timer = setInterval(function(){
+
+        rValue = document.getElementById("r").value;
+        gValue = document.getElementById("g").value;
+        bValue = document.getElementById("b").value;
+
+        currentColor.style.backgroundColor = "RGB(" + rValue + "," + gValue + "," + bValue + ")";
+
+    },100);
+
+
+
 };
 
 var clear = function()
