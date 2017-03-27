@@ -1,0 +1,55 @@
+canvas {
+    border: 5px solid black;
+}
+#colorPicker, #toolKit
+{
+    position: absolute;
+    top: 10px;
+    width: 200px;
+    height: 70px;
+    right: 100px;
+    border: 5px solid black;
+    resize: both;
+    visibility: hidden;
+}
+#r
+{
+    margin-top: 5px;
+}
+#drawCanvas
+{
+    cursor: url("../images/pencil1.png"),auto;
+}
+#files
+{
+    position: absolute;
+    height: 20px;
+    width: 800px;
+    border: 5px solid grey;
+}
+#colors,#tools
+{
+    width: 80px;
+    cursor: pointer;
+    text-align: center;
+    font-size: 20px;
+    border-right: solid black;
+    height: 20px;
+    display: inline-block;
+}
+#pencil,#eraser
+{
+    width: 30px;
+    height: 30px;
+    margin: 0;
+    display: inline-block;
+    border: 2px solid grey;
+}
+#pencilImage, #eraserImage
+{
+    width: 95%;
+    height: 95%;
+    cursor: pointer;
+
+}
+
