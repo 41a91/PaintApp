@@ -12,6 +12,8 @@ var ctx;
 var visibility;
 var tools;
 var currentColor;
+var pixelCreator;
+var pixels;
 
 window.onload = function()
 {
@@ -56,6 +58,7 @@ window.onload = function()
 
 
 
+
     visibility = [false,false];
     tools = [document.getElementById("pencil"),document.getElementById("eraser")];
 
@@ -68,6 +71,15 @@ window.onload = function()
     c1 = document.getElementById("drawCanvas");
     ctx = c1.getContext("2d");
     paintBrush = new drawControl(c1,event);
+    pixelCreator = new pixelBoard(c1,20);
+    pixels = pixelCreator.getPixels();
+for(var i = 0; i < pixels.length; i++)
+{
+    document.body.appendChild(pixels[i]);
+}
+    c1.appendChild(pixels[0]);
+    console.log(pixels[0]);
+
 
     tools[0].addEventListener("click",function()
         {

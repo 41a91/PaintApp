@@ -114,6 +114,7 @@ var pixelBoard = Class.create({
       this.amountH = canvas.height/pixelSize;
       this.totalAmount = this.amountW * this.amountH;
       this.pixels = [];
+      this.createPixels();
     },
     getPixels: function()
     {
@@ -124,19 +125,36 @@ var pixelBoard = Class.create({
         var x = 0;
         var y = 0;
 
-        for(var i = 0; i < this.totalAmount; i++)
+
+        for(var i = 0; i < this.totalAmount-(this.amountW*2); i++)
         {
           var temp = document.createElement("Div");
-          temp.style.display = "absolute";
-          temp.style.top = y + "px";
-          temp.style.left = x + "px";
+          temp.style.width = this.pixelSize + "px";
+          temp.style.height = this.pixelSize + "px";
+          temp.style.display = "inline";
+          temp.style.position = "absolute";
+          temp.style.top = y+38 + "px";
+          temp.style.left = x+13 + "px";
           temp.style.border = "1px solid black";
-          x++;
-          if(x == this.amountW)
+          x += this.pixelSize;
+          if(x == this.amountW*this.pixelSize)
           {
               y += this.pixelSize;
               x = 0;
           }
+
+          temp.addEventListener("click",function()
+          {
+              var r = document.getElementById("r").value;
+              var g = document.getElementById("g").value;
+              var b = document.getElementById("b").value;
+
+              console.log(r);
+
+             this.style.backgroundColor = "RGB(" + r + "," + g + "," + b + ")";
+
+
+          });
 
           this.pixels.push(temp);
 
