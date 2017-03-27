@@ -103,3 +103,45 @@ var colorHolder = Class.create({
         g.restore();
     }
 });
+
+var pixelBoard = Class.create({
+
+    initialize: function(canvas,pixelSize)
+    {
+      this.canvas = canvas;
+      this.pixelSize = pixelSize;
+      this.amountW = canvas.width/pixelSize;
+      this.amountH = canvas.height/pixelSize;
+      this.totalAmount = this.amountW * this.amountH;
+      this.pixels = [];
+    },
+    getPixels: function()
+    {
+        return this.pixels;
+    },
+    createPixels: function()
+    {
+        var x = 0;
+        var y = 0;
+
+        for(var i = 0; i < this.totalAmount; i++)
+        {
+          var temp = document.createElement("Div");
+          temp.style.display = "absolute";
+          temp.style.top = y + "px";
+          temp.style.left = x + "px";
+          temp.style.border = "1px solid black";
+          x++;
+          if(x == this.amountW)
+          {
+              y += this.pixelSize;
+              x = 0;
+          }
+
+          this.pixels.push(temp);
+
+        }
+    }
+
+
+});

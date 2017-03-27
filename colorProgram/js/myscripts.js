@@ -12,7 +12,6 @@ var ctx;
 var visibility;
 var tools;
 var currentColor;
-var timer1;
 
 window.onload = function()
 {
@@ -105,10 +104,6 @@ window.onload = function()
 
                 paintBrush.erase(ctx);
             }
-
-
-
-
     });
     c1.addEventListener("mouseup",function()
     {
