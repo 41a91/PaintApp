@@ -3,6 +3,7 @@ var rValue;
 var gValue;
 var bValue;
 var paintBrush;
+var fillColor;
 var button;
 var colorButton;
 var colorWheel;
@@ -63,7 +64,7 @@ window.onload = function()
 
     visibility = [false,false,false];
     type = [document.getElementById("type"),0,0];
-    tools = [document.getElementById("pencil"),document.getElementById("eraser"),document.getElementById("colorChooser"),document.getElementById("paintTool"),document.getElementById("caliTool")];
+    tools = [document.getElementById("pencil"),document.getElementById("eraser"),document.getElementById("colorChooser"),document.getElementById("paintTool"),document.getElementById("caliTool"),document.getElementById("fillTool")];
 
     toolKit = document.getElementById("toolKit");
     toolButton = document.getElementById("tools");
@@ -78,6 +79,7 @@ window.onload = function()
     c1 = document.getElementById("drawCanvas");
     ctx = c1.getContext("2d");
     paintBrush = new drawControl(c1,event);
+    fillColor = new fillTool(c1,ctx);
     pixelCreator = new pixelBoard(c1,20);
     pixels = pixelCreator.getPixels();
 for(var i = 0; i < pixels.length; i++)
@@ -177,6 +179,11 @@ for(var i = 0; i < pixels.length; i++)
        c1.style.cursor = "url('images/calliTool1.png'),auto";
         paintBrush.setToolType(4);
     });
+    tools[5].addEventListener("click",function()
+    {
+       c1.style.cursor = "url('images/fillTool1.png'),auto";
+        paintBrush.setToolType(5);
+    });
 
     c1.addEventListener("mousedown",function()
     {
@@ -205,6 +212,13 @@ for(var i = 0; i < pixels.length; i++)
                 $("#b").val(newColor[2]);
 
             }
+            else if(paintBrush.getToolType() == 5)
+            {
+                paintBrush.setX(event.clientX);
+                paintBrush.setY(event.clientY);
+
+                fillColor.doFill(paintBrush.getX(),paintBrush.getY());
+            }
     });
     c1.addEventListener("mouseup",function()
     {
@@ -220,6 +234,9 @@ for(var i = 0; i < pixels.length; i++)
 
            paintBrush.setX(event.clientX);
            paintBrush.setY(event.clientY);
+           paintBrush.setR(rValue);
+           paintBrush.setG(gValue);
+           paintBrush.setB(bValue);
            paintBrush.setColor("rgb(" + rValue + "," + gValue + "," + bValue + ")");
 
            paintBrush.draw(ctx);
@@ -241,6 +258,10 @@ for(var i = 0; i < pixels.length; i++)
         paintBrush.setY(event.clientY);
         paintBrush.setColor("rgb(" + rValue + "," + gValue + "," + bValue + ")");
 
+        paintBrush.setR(rValue);
+        paintBrush.setG(gValue);
+        paintBrush.setB(bValue);
+
         paintBrush.paintTool(ctx);
     }
     else if(paintBrush.getDrawing() && paintBrush.getToolType() == 4)
@@ -252,6 +273,10 @@ for(var i = 0; i < pixels.length; i++)
            paintBrush.setX(event.clientX);
            paintBrush.setY(event.clientY);
            paintBrush.setColor("rgb(" + rValue + "," + gValue + "," + bValue + ")");
+
+           paintBrush.setR(rValue);
+           paintBrush.setG(gValue);
+           paintBrush.setB(bValue);
 
            paintBrush.calligraphyTool(ctx);
        }
@@ -317,6 +342,10 @@ for(var i = 0; i < pixels.length; i++)
 
         currentColor.style.backgroundColor = "RGB(" + rValue + "," + gValue + "," + bValue + ")";
 
+        paintBrush.setR(rValue);
+        paintBrush.setG(gValue);
+        paintBrush.setB(bValue);
+
     },100);
 
 
@@ -330,3 +359,4 @@ var clear = function()
 
 //https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Pixel_manipulation_with_canvas
 //https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a#attr-download
+//https://forum.processing.org/one/topic/fill-tool-and-spray-tool-in-a-drawing-program.html

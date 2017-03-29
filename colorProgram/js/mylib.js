@@ -34,6 +34,9 @@ var drawControl = Class.create(mousePosition,{
     {
         $super(canvas);
         this.currentColor = "rgb(40,80,0)";
+        this.r = 0;
+        this.g = 0;
+        this.b = 0;
         this.previousColor = this.currentColor;
         this.drawing = false;
         this.toolType = 0;
@@ -42,6 +45,30 @@ var drawControl = Class.create(mousePosition,{
     {
       this.previousColor = this.currentColor;
       this.currentColor = color;
+    },
+    setR: function(r)
+    {
+        this.r = r;
+    },
+    setG: function(g)
+    {
+      this.g = g;
+    },
+    setB: function(b)
+    {
+      this.b = b;
+    },
+    getR: function()
+    {
+        return this.r;
+    },
+    getG: function()
+    {
+        return this.g;
+    },
+    getB: function()
+    {
+        return this.b;
     },
     getDrawing: function()
     {
@@ -106,6 +133,10 @@ var drawControl = Class.create(mousePosition,{
         graphics.fill();
 
         graphics.restore();
+    },
+    doFill: function(img)
+    {
+
     }
 });
 var colorHolder = Class.create({
@@ -193,5 +224,58 @@ var pixelBoard = Class.create({
         }
     }
 
+
+});
+
+var fillTool = Class.create(drawControl,{
+
+    initialize: function($super,canvas,img)
+    {
+        $super(canvas);
+        this.img = img;
+        this.imgWidth = canvas.width;
+        this.imgHeight = canvas.height;
+        this.imgPixels = img.getImageData(0,0,this.imgWidth,this.imgHeight);
+        this.backColor = "rgb(0,0,0)";
+        this.stack = [];
+    },
+    doFill: function(x,y) {
+        this.stack.push([x - 17, y - 3]);
+        this.backColor = this.imgPixels.data[1];
+        console.log(this.imgPixels.data.length);
+        console.log(x - 17);
+        console.log(this.backColor);
+
+        while (this.stack.length) {
+            var newPos, nX, nY, pixelPos, reachLeft, reachRight;
+
+            newPos = this.stack.pop();
+            nX = newPos[0];
+            nY = newPos[1];
+
+            pixelPos = ((nY * this.imgWidth + nX) * 4);
+
+            /* while(nY-- >= )
+             }*/
+
+        }
+    },
+    matchStartColor: function(pixelPos)
+    {
+        var r = this.imgPixels[pixelPos];
+        var g = this.imgPixels[pixelPos+1];
+        var b = this.imgPixels[pixelPos+2];
+
+        var color = "rgb(" + r + "," + g + "," + b + ")";
+
+        return (color == this.currentColor);
+    },
+    colorPixel: function(pixelPos)
+    {
+        this.imgPixels[pixelPos] = this.getR();
+        this.imgPixels[pixelPos+1] = this.getG();
+        this.imgPixels[pixelPos+2] = this.getB();
+        this.imgPixels[pixelPos+3] = 255;
+    }
 
 });
