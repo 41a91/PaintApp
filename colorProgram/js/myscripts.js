@@ -9,6 +9,9 @@ var colorWheel;
 var toolKit;
 var toolButton;
 var saveButton;
+var saveOptions;
+var saveName;
+var submitSave;
 var ctx;
 var visibility;
 var tools;
@@ -60,17 +63,19 @@ window.onload = function()
 
     visibility = [false,false,false];
     type = [document.getElementById("type"),0,0];
-    tools = [document.getElementById("pencil"),document.getElementById("eraser"),document.getElementById("colorChooser")];
+    tools = [document.getElementById("pencil"),document.getElementById("eraser"),document.getElementById("colorChooser"),document.getElementById("paintTool"),document.getElementById("caliTool")];
 
     toolKit = document.getElementById("toolKit");
     toolButton = document.getElementById("tools");
     saveButton = document.getElementById("save");
+    submitSave = document.getElementById("savePNG");
+    saveOptions = document.getElementById("saveOptions");
+    saveName = document.getElementById("fileName");
     colorWheel = document.getElementById("colorPicker");
     colorButton = document.getElementById("colors");
     currentColor = document.getElementById("currentColor");
     button = document.getElementById("clear");
     c1 = document.getElementById("drawCanvas");
-    c1.style.visibility = "hidden";
     ctx = c1.getContext("2d");
     paintBrush = new drawControl(c1,event);
     pixelCreator = new pixelBoard(c1,20);
@@ -162,30 +167,24 @@ for(var i = 0; i < pixels.length; i++)
        c1.style.cursor = "url('images/colorPicker1.png'),auto";
         paintBrush.setToolType(2);
     });
+    tools[3].addEventListener("click",function()
+    {
+       c1.style.cursor = "url('images/paintTool1.png'),auto";
+       paintBrush.setToolType(3);
+    });
+    tools[4].addEventListener("click",function()
+    {
+       c1.style.cursor = "url('images/calliTool1.png'),auto";
+        paintBrush.setToolType(4);
+    });
 
     c1.addEventListener("mousedown",function()
     {
-        paintBrush.setDrawing(true);
 
-            if(paintBrush.getToolType() == 0)
+
+            if(paintBrush.getToolType() == 0 || paintBrush.getToolType() == 1 || paintBrush.getToolType() == 3 || paintBrush.getToolType() == 4)
             {
-
-                rValue = document.getElementById("r").value;
-                gValue = document.getElementById("g").value;
-                bValue = document.getElementById("b").value;
-
-                paintBrush.setX(event.clientX);
-                paintBrush.setY(event.clientY);
-                paintBrush.setColor("rgb(" + rValue + "," + gValue + "," + bValue + ")");
-
-                paintBrush.draw(ctx);
-            }
-            else if(paintBrush.getToolType() == 1)
-            {
-                paintBrush.setX(event.clientX);
-                paintBrush.setY(event.clientY);
-
-                paintBrush.erase(ctx);
+                paintBrush.setDrawing(true);
             }
             else if(paintBrush.getToolType() == 2)
             {
@@ -210,6 +209,52 @@ for(var i = 0; i < pixels.length; i++)
     c1.addEventListener("mouseup",function()
     {
        paintBrush.setDrawing(false);
+    });
+    c1.addEventListener("mousemove",function()
+    {
+       if(paintBrush.getDrawing() && paintBrush.getToolType() == 0)
+       {
+           rValue = document.getElementById("r").value;
+           gValue = document.getElementById("g").value;
+           bValue = document.getElementById("b").value;
+
+           paintBrush.setX(event.clientX);
+           paintBrush.setY(event.clientY);
+           paintBrush.setColor("rgb(" + rValue + "," + gValue + "," + bValue + ")");
+
+           paintBrush.draw(ctx);
+       }
+       else if(paintBrush.getDrawing() && paintBrush.getToolType() == 1)
+       {
+           paintBrush.setX(event.clientX);
+           paintBrush.setY(event.clientY);
+
+           paintBrush.erase(ctx);
+       }
+       else if(paintBrush.getDrawing() && paintBrush.getToolType() == 3)
+    {
+        rValue = document.getElementById("r").value;
+        gValue = document.getElementById("g").value;
+        bValue = document.getElementById("b").value;
+
+        paintBrush.setX(event.clientX);
+        paintBrush.setY(event.clientY);
+        paintBrush.setColor("rgb(" + rValue + "," + gValue + "," + bValue + ")");
+
+        paintBrush.paintTool(ctx);
+    }
+    else if(paintBrush.getDrawing() && paintBrush.getToolType() == 4)
+       {
+           rValue = document.getElementById("r").value;
+           gValue = document.getElementById("g").value;
+           bValue = document.getElementById("b").value;
+
+           paintBrush.setX(event.clientX);
+           paintBrush.setY(event.clientY);
+           paintBrush.setColor("rgb(" + rValue + "," + gValue + "," + bValue + ")");
+
+           paintBrush.calligraphyTool(ctx);
+       }
     });
     button.addEventListener("click",clear);
     colorButton.addEventListener("click",function()
@@ -247,13 +292,21 @@ for(var i = 0; i < pixels.length; i++)
        if(visibility[2])
        {
            saveButton.style.backgroundColor = "white";
+           saveOptions.style.visibility = "hidden";
            visibility[2] = false;
        }
        else
        {
            saveButton.style.backgroundColor = "lightgrey";
+           saveOptions.style.visibility = "visible";
            visibility[2] = true;
        }
+    });
+    submitSave.addEventListener("click",function()
+    {
+        submitSave.href = c1.toDataURL();
+        console.log(saveName.value);
+        submitSave.download = saveName.value;
     });
 
     timer = setInterval(function(){

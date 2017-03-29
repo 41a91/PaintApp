@@ -82,6 +82,30 @@ var drawControl = Class.create(mousePosition,{
         var data = pixel.data;
 
         return [data[0],data[1],data[2]];
+    },
+    calligraphyTool: function(graphics)
+    {
+        graphics.save();
+
+        graphics.fillStyle = this.currentColor;
+        graphics.beginPath();
+        graphics.arc(this.getX()-17,this.getY()-3,10,1,Math.PI*2,true);
+        graphics.closePath();
+        graphics.fill();
+
+        graphics.restore();
+    },
+    paintTool: function(graphics)
+    {
+        graphics.save();
+
+        graphics.fillStyle = this.currentColor;
+        graphics.beginPath();
+        graphics.arc(this.getX()-17,this.getY()-3,10,0,Math.PI*2,true);
+        graphics.closePath();
+        graphics.fill();
+
+        graphics.restore();
     }
 });
 var colorHolder = Class.create({
@@ -105,8 +129,9 @@ var colorHolder = Class.create({
         g.save();
 
         g.fillStyle = this.color;
-        console.log(this.color);
+
         g.fillRect(this.x,this.y,15,15);
+
         g.restore();
     }
 });
