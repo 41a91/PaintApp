@@ -15,12 +15,17 @@
 
 </head>
 <body>
-<div id="files"><div class="file" id="colors">Colors</div><div class="file" id="tools">Tools</div><div class="file" id="type">Type</div></div>
+<div id="files"><div class="file" id="colors">Colors</div>
+    <div class="file" id="tools">Tools</div>
+    <div class="file" id="type">Type</div>
+    <div class="file" id="save">Save</div>
+</div>
 <canvas id="drawCanvas" height="600" width="800"></canvas>
 <button type="button" id="clear">Clear</button>
 <div id="toolKit" draggable="true">
-    <div id="pencil"><img src="images/pencil1.png" id="pencilImage" alt="PencilTool"/></div>
-    <div id="eraser"><img src="images/eraser1.png" id="eraserImage" alt="EraserTool"/></div>
+    <div id="pencil" class="tools"><img src="images/pencil1.png" class="toolImage" id="pencilImage" alt="PencilTool"/></div>
+    <div id="eraser" class="tools"><img src="images/eraser1.png" class="toolImage" id="eraserImage" alt="EraserTool"/></div>
+    <div id="colorChooser" class="tools"><img src="images/colorPicker1.png" class="toolImage" id="colorChooserImage" alt="colorChooserTool"/></div>
 </div>
 <div id="colorPicker" draggable="true">
 
@@ -35,6 +40,12 @@
   <!-- <label>R: <input id="r" type="number" value="0"/></label>
    <label>G: <input id="g" type="number" value="0"/></label>
    <label>B: <input id="b" type="number" value="0"/></label>-->
+</div>
+<div id="saveOptions" draggable="true">
+
+<label>File Name: <input type="text" id="fileName"/></label>
+<button type="button">Save</button>
+
 </div>
 
 </body>

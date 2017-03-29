@@ -75,6 +75,13 @@ var drawControl = Class.create(mousePosition,{
             graphics.fillRect(this.getX()-17,this.getY()-3,10,10);
 
             graphics.restore();
+    },
+    colorChooser: function(graphics)
+    {
+        var pixel = graphics.getImageData(this.getX()-17,this.getY()-3,1,1);
+        var data = pixel.data;
+
+        return [data[0],data[1],data[2]];
     }
 });
 var colorHolder = Class.create({

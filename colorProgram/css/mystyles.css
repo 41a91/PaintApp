@@ -23,6 +23,17 @@ canvas {
     resize: both;
     visibility: hidden;
  }
+#saveOptions
+{
+    position: absolute;
+    top: 500px;
+    width: 20%;
+    height: 5%;
+    right: 100px;
+    border: 5px solid black;
+    resize: both;
+    visibility: visible;
+}
 #r
 {
     margin-top: 5px;
@@ -61,7 +72,7 @@ canvas {
     color: lightblue;
     z-index: 2;
 }
-#pencil,#eraser
+.tools
 {
     width: 30px;
     height: 30px;
@@ -69,7 +80,7 @@ canvas {
     display: inline-block;
     border: 2px solid grey;
 }
-#pencilImage, #eraserImage
+.toolImage
 {
     width: 95%;
     height: 95%;

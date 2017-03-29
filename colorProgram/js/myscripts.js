@@ -8,6 +8,7 @@ var colorButton;
 var colorWheel;
 var toolKit;
 var toolButton;
+var saveButton;
 var ctx;
 var visibility;
 var tools;
@@ -57,12 +58,13 @@ window.onload = function()
         $("#b").val($("sliderB").slider("value"));
     });
 
-    visibility = [false,false];
-    type = [document.getElementById("type"),0];
-    tools = [document.getElementById("pencil"),document.getElementById("eraser")];
+    visibility = [false,false,false];
+    type = [document.getElementById("type"),0,0];
+    tools = [document.getElementById("pencil"),document.getElementById("eraser"),document.getElementById("colorChooser")];
 
     toolKit = document.getElementById("toolKit");
     toolButton = document.getElementById("tools");
+    saveButton = document.getElementById("save");
     colorWheel = document.getElementById("colorPicker");
     colorButton = document.getElementById("colors");
     currentColor = document.getElementById("currentColor");
@@ -76,6 +78,7 @@ window.onload = function()
 for(var i = 0; i < pixels.length; i++)
 {
     document.body.appendChild(pixels[i]);
+    pixels[i].style.visibility = "hidden";
 }
 
     type[0].addEventListener("click",function()
@@ -90,16 +93,15 @@ for(var i = 0; i < pixels.length; i++)
             freeDraw.style.left = tRect.left-tRect.top+ "px";
             freeDraw.addEventListener("click",showF);
             function showF(evt){
-
                 c1.style.visibility = "visible";
-                freeDraw.removeEventListener("click",showF);
-                freeDraw.addEventListener("click",hideF);
-            };
-            function hideF(evt){
-
-                c1.style.visibility = "hidden";
-                freeDraw.removeEventListener("click",hideF);
-                freeDraw.addEventListener("click",showF);
+                if(type[2] = 2)
+                {
+                    for(var i = 0; i < pixels.length; i++)
+                    {
+                        pixels[i].style.visibility = "hidden";
+                    }
+                }
+                type[2] = 1;
 
             };
 
@@ -112,7 +114,21 @@ for(var i = 0; i < pixels.length; i++)
             pixelDraw.className = "dropDown";
             pixelDraw.style.top = fRect.bottom-fRect.height/2 + "px";
             pixelDraw.style.left = fRect.left-fRect.width/7 + "px";
+            pixelDraw.addEventListener("click",showP);
             document.getElementById("files").appendChild(pixelDraw);
+
+            function showP(evt){
+                if(type[2] = 1)
+                {
+                    c1.style.visibility = "hidden";
+                }
+                for(var i = 0; i < pixels.length; i++)
+                {
+                    pixels[i].style.visibility = "visible";
+                }
+
+                type[2] = 2;
+            };
 
             type[1] = 1;
             type[0].style.backgroundColor = "lightgrey";
@@ -141,6 +157,11 @@ for(var i = 0; i < pixels.length; i++)
         c1.style.cursor = "url('images/eraserTool.png'),auto";
         paintBrush.setToolType(1);
     });
+    tools[2].addEventListener("click",function()
+    {
+       c1.style.cursor = "url('images/colorPicker1.png'),auto";
+        paintBrush.setToolType(2);
+    });
 
     c1.addEventListener("mousedown",function()
     {
@@ -165,6 +186,25 @@ for(var i = 0; i < pixels.length; i++)
                 paintBrush.setY(event.clientY);
 
                 paintBrush.erase(ctx);
+            }
+            else if(paintBrush.getToolType() == 2)
+            {
+                paintBrush.setX(event.clientX);
+                paintBrush.setY(event.clientY);
+
+                var newColor = paintBrush.colorChooser(ctx);
+
+                paintBrush.setColor("rgb(" + newColor[0] + "," + newColor[1] + "," + newColor[2] + ")");
+
+                $("#sliderR").slider("value",newColor[0]);
+                $("#r").val(newColor[0]);
+
+                $("#sliderG").slider("value",newColor[1]);
+                $("#g").val(newColor[1]);
+
+                $("#sliderB").slider("value",newColor[2]);
+                $("#b").val(newColor[2]);
+
             }
     });
     c1.addEventListener("mouseup",function()
@@ -202,6 +242,19 @@ for(var i = 0; i < pixels.length; i++)
             visibility[1] = true;
         }
     });
+    saveButton.addEventListener("click",function()
+    {
+       if(visibility[2])
+       {
+           saveButton.style.backgroundColor = "white";
+           visibility[2] = false;
+       }
+       else
+       {
+           saveButton.style.backgroundColor = "lightgrey";
+           visibility[2] = true;
+       }
+    });
 
     timer = setInterval(function(){
 
@@ -222,3 +275,5 @@ var clear = function()
     ctx.clearRect(0,0,c1.width,c1.height);
 };
 
+//https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Pixel_manipulation_with_canvas
+//https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a#attr-download
