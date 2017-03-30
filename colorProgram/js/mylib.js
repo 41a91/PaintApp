@@ -235,30 +235,79 @@ var fillTool = Class.create(drawControl,{
         this.img = img;
         this.imgWidth = canvas.width;
         this.imgHeight = canvas.height;
-        this.imgPixels = img.getImageData(0,0,this.imgWidth,this.imgHeight);
-        this.backColor = "rgb(0,0,0)";
+        this.fCanvas = canvas.getBoundingClientRect();
+        this.imgData = img.getImageData(this.fCanvas.left,this.fCanvas.top,this.imgWidth,this.imgHeight);
+        this.imgPixels = this.imgData.data;
+        this.startR = 0;
+        this.startG = 0;
+        this.startB = 0;
         this.stack = [];
     },
-    doFill: function(x,y) {
-        this.stack.push([x - 17, y - 3]);
-        this.backColor = this.imgPixels.data[1];
-        console.log(this.imgPixels.data.length);
-        console.log(x - 17);
-        console.log(this.backColor);
+    doFill: function(x,y,rp,gp,bp) {
 
-        while (this.stack.length) {
-            var newPos, nX, nY, pixelPos, reachLeft, reachRight;
+        this.startR = this.img.getImageData(x,y,1,1).data[0];
+        this.startG = this.img.getImageData(x,y,1,1).data[1];
+        this.startB = this.img.getImageData(x,y,1,1).data[2];
 
-            newPos = this.stack.pop();
-            nX = newPos[0];
-            nY = newPos[1];
+        //if(this.startR != rp && this.startG != gp && this.startB != bp) {
 
-            pixelPos = ((nY * this.imgWidth + nX) * 4);
 
-            /* while(nY-- >= )
-             }*/
+            this.imgData = this.img.getImageData(0, 0, this.imgWidth, this.imgHeight);
+            this.imgPixels = this.imgData.data;
 
-        }
+            this.stack.push([x - 17, y - 3]);
+
+            while (this.stack.length) {
+                var newPos, nX, nY, pixelPos, reachLeft, reachRight;
+
+                newPos = this.stack.pop();
+                nX = newPos[0];
+                nY = newPos[1];
+
+                pixelPos = ((nY * this.imgWidth + nX) * 4);
+                console.log(this.imgPixels[pixelPos]);
+                while (nY-- >= 0 && this.matchStartColor(pixelPos)) {
+                    pixelPos -= this.imgWidth * 4;
+                }
+                pixelPos += this.imgWidth * 4;
+                ++nY;
+                reachLeft = false;
+                reachRight = false;
+                while (nY++ < this.imgHeight - 1 && this.matchStartColor(pixelPos)) {
+                    this.colorPixel(pixelPos, rp, gp, bp);
+
+                    if (nX > 0) {
+                        if (this.matchStartColor(pixelPos - 4)) {
+                            if (!reachLeft) {
+                                this.stack.push([nX - 1, nY]);
+                                reachLeft = true;
+                            }
+                        }
+                        else if (reachLeft) {
+                            reachLeft = false;
+                        }
+                    }
+
+                    if (nX < this.imgWidth - 1) {
+                        if (this.matchStartColor(pixelPos + 4)) {
+                            if (!reachRight) {
+                                this.stack.push([nX + 1, nY]);
+                                reachRight = true;
+                            }
+                        }
+                        else if (reachRight) {
+                            reachRight = false;
+                        }
+                    }
+                    pixelPos += this.imgWidth * 4;
+                }
+            }
+            this.img.putImageData(this.imgData, 0, 0);
+       // }
+       // else
+        //{
+            //console.log("dont do the same color...");
+        //}
     },
     matchStartColor: function(pixelPos)
     {
@@ -266,15 +315,14 @@ var fillTool = Class.create(drawControl,{
         var g = this.imgPixels[pixelPos+1];
         var b = this.imgPixels[pixelPos+2];
 
-        var color = "rgb(" + r + "," + g + "," + b + ")";
 
-        return (color == this.currentColor);
+        return (r == this.startR && g == this.startG && b == this.startB);
     },
-    colorPixel: function(pixelPos)
+    colorPixel: function(pixelPos,r,g,b)
     {
-        this.imgPixels[pixelPos] = this.getR();
-        this.imgPixels[pixelPos+1] = this.getG();
-        this.imgPixels[pixelPos+2] = this.getB();
+        this.imgPixels[pixelPos] = r;
+        this.imgPixels[pixelPos+1] = g;
+        this.imgPixels[pixelPos+2] = b;
         this.imgPixels[pixelPos+3] = 255;
     }
 

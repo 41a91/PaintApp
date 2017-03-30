@@ -217,7 +217,7 @@ for(var i = 0; i < pixels.length; i++)
                 paintBrush.setX(event.clientX);
                 paintBrush.setY(event.clientY);
 
-                fillColor.doFill(paintBrush.getX(),paintBrush.getY());
+                fillColor.doFill(paintBrush.getX(),paintBrush.getY(),paintBrush.getR(),paintBrush.getG(),paintBrush.getB());
             }
     });
     c1.addEventListener("mouseup",function()
