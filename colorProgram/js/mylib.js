@@ -2,9 +2,10 @@ var mousePosition = Class.create({
 
    initialize: function(canvas)
    {
+       this.rect = canvas.getBoundingClientRect();
        this.canvas = canvas;
-        this.x = event.pageX;
-        this.y = event.pageY;
+        this.x = event.pageX-this.rect.left;
+        this.y = event.pageY-this.rect.top;
    },
     getX: function()
     {

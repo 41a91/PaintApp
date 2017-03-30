@@ -148,7 +148,7 @@ for(var i = 0; i < pixels.length; i++)
              {
                  menu[0].parentNode.removeChild(menu[0]);
              }
-             type[0].style.backgroundColor = "white";
+             type[0].style.backgroundColor = "transparent";
 
             type[1] = 0;
         }
@@ -287,7 +287,7 @@ for(var i = 0; i < pixels.length; i++)
        if(visibility[0])
        {
            colorWheel.style.visibility = "hidden";
-           colorButton.style.backgroundColor = "white";
+           colorButton.style.backgroundColor = "transparent";
            visibility[0] = false;
        }
        else
@@ -302,7 +302,7 @@ for(var i = 0; i < pixels.length; i++)
         if(visibility[1])
         {
             toolKit.style.visibility = "hidden";
-            toolButton.style.backgroundColor = "white";
+            toolButton.style.backgroundColor = "transparent";
             visibility[1] = false;
         }
         else
@@ -316,7 +316,7 @@ for(var i = 0; i < pixels.length; i++)
     {
        if(visibility[2])
        {
-           saveButton.style.backgroundColor = "white";
+           saveButton.style.backgroundColor = "transparent";
            saveOptions.style.visibility = "hidden";
            visibility[2] = false;
        }

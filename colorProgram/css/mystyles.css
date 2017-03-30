@@ -1,5 +1,12 @@
+body
+{
+    background-color: lightgrey;
+}
+
 canvas {
     border: 5px solid black;
+    background-color: white;
+    margin: auto auto;
 }
 #colorPicker
 {
@@ -15,11 +22,9 @@ canvas {
 #toolKit
  {
     position: absolute;
-    top: 250px;
-    width: 17%;
+    top: 5%;
     height: 5%;
-    right: 100px;
-    border: 5px solid black;
+    left: .9%;
     resize: both;
     visibility: hidden;
  }
@@ -53,7 +58,8 @@ a
     position: absolute;
     height: 20px;
     width: 800px;
-    border: 5px solid grey;
+    box-shadow: 5px 5px 1px 10px;
+    background: black;
 }
 .file
 {
@@ -64,6 +70,7 @@ a
     border-right: solid black;
     height: 20px;
     display: inline-block;
+    color: white;
 }
 .dropDown
 {
@@ -83,7 +90,8 @@ a
     width: 30px;
     height: 30px;
     margin: 0;
-    display: inline-block;
+    display: block;
+    background-color: yellow;
     border: 2px solid grey;
 }
 .toolImage
@@ -107,5 +115,9 @@ a
     width: 40%;
     margin: auto auto;
     height: 10%;
+}
+#type
+{
+    display: none;
 }
 
